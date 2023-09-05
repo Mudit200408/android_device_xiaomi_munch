@@ -56,6 +56,10 @@ PRODUCT_SYSTEM_PROPERTIES += \
 	ro.sf.blurs_are_expensive=1 \
 	ro.surface_flinger.supports_background_blur=1
 
+#LTE CA
+PRODUCT_SYSTEM_PROPERTIES += \
+	persist.sys.radio.force_lte_ca=true
+
 PRODUCT_VENDOR_PROPERTIES += \
     persist.vendor.audio.delta.refresh=true \
     persist.vendor.audio.misound.disable=true \
