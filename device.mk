@@ -49,7 +49,12 @@ PRODUCT_SYSTEM_PROPERTIES += \
     ro.config.media_vol_default=8 \
     ro.config.media_vol_steps=25 \
     ro.config.vc_call_vol_default=9 \
-    ro.config.vc_call_vol_steps=11
+    ro.config.vc_call_vol_steps=11 
+    
+#Blurs
+PRODUCT_SYSTEM_PROPERTIES += \
+	ro.sf.blurs_are_expensive=1 \
+	ro.surface_flinger.supports_background_blur=1
 
 PRODUCT_VENDOR_PROPERTIES += \
     persist.vendor.audio.delta.refresh=true \
