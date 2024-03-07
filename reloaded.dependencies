@@ -1,0 +1,36 @@
+[
+    {
+        "repository": "proprietary_vendor_xiaomi",
+        "target_path": "vendor/xiaomi",
+        "branch": "uvite"
+    },
+    {
+        "remote": "github",
+        "repository": "AOSPA/android_hardware_xiaomi",
+        "target_path": "hardware/xiaomi",
+        "branch": "topaz"
+    },
+    {
+        "remote": "github",
+        "repository": "Mudit200408/android_hardware_dolby",
+        "target_path": "hardware/dolby",
+        "branch": "14"
+    },
+    {
+        "repository": "kernel_xiaomi_sm8250",
+        "target_path": "kernel/xiaomi/sm8250",
+        "branch": "u"
+    },
+    {
+        "remote": "github",
+        "repository": "ReloadedOS/vendor_nxp_opensource_hidlimpl",
+        "target_path": "vendor/nxp/opensource/hidlimpl",
+        "branch": "u-SN100X"
+    },
+    {
+        "remote": "github",
+        "repository": "ReloadedOS/vendor_nxp_opensource_halimpl",
+        "target_path": "vendor/nxp/opensource/halimpl",
+        "branch": "u-SN100X"
+    }
+]
