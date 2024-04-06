@@ -5,9 +5,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/lineage_munch.mk
+    $(LOCAL_DIR)/cherish_munch.mk
 
 COMMON_LUNCH_CHOICES := \
-    lineage_munch-user \
-    lineage_munch-userdebug \
-    lineage_munch-eng
+    cherish_munch-user \
+    cherish_munch-userdebug \
+    cherish_munch-eng
