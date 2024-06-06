@@ -20,9 +20,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.UserHandle;
-import android.view.Display;
-
 import android.provider.Settings;
+import android.util.Log;
+import android.view.OrientationEventListener;
+import android.content.res.Configuration;
 import androidx.preference.PreferenceManager;
 
 public final class RefreshUtils {
@@ -39,15 +40,58 @@ public final class RefreshUtils {
     protected static final int STATE_DEFAULT = 0;
     protected static final int STATE_STANDARD = 1;
     protected static final int STATE_EXTREME = 2;
+    protected static final int STATE_LAND = 3;
 
     private static final float REFRESH_STATE_DEFAULT = 60f;
     private static final float REFRESH_STATE_STANDARD = 60f;
     private static final float REFRESH_STATE_EXTREME = 120f;
+    private static final float REFRESH_STATE_LAND = 60f;
 
     private static final String REFRESH_STANDARD = "refresh.standard=";
     private static final String REFRESH_EXTREME = "refresh.extreme=";
+    private static final String REFRESH_LAND = "refresh.land=";
 
     private SharedPreferences mSharedPrefs;
+
+    private OrientationEventListener orientationListener;
+    private boolean isLandscape = false;
+
+    private void initializeOrientationListener(String packageName) {
+        if (orientationListener != null) {
+            orientationListener.disable();
+        }
+
+        orientationListener = new OrientationEventListener(mContext) {
+            @Override
+            public void onOrientationChanged(int orientation) {
+                if (orientation == ORIENTATION_UNKNOWN) {
+                    return;
+                }
+
+                // Check the device orientation using Configuration
+                int currentOrientation = mContext.getResources().getConfiguration().orientation;
+                boolean newIsLandscape = (currentOrientation == Configuration.ORIENTATION_LANDSCAPE);
+                if (newIsLandscape != isLandscape) {
+                    isLandscape = newIsLandscape;
+                    adjustRefreshRateForOrientation(packageName);
+                }
+            }
+        };
+
+        if (orientationListener.canDetectOrientation()) {
+            orientationListener.enable();
+        } else {
+            orientationListener.disable();
+        }
+    }
+
+    private void adjustRefreshRateForOrientation(String packageName) {
+        float maxrate = isLandscape ? REFRESH_STATE_LAND : REFRESH_STATE_EXTREME;
+        float minrate = isLandscape ? REFRESH_STATE_LAND : REFRESH_STATE_EXTREME;
+        Settings.System.putFloat(mContext.getContentResolver(), KEY_MIN_REFRESH_RATE, minrate);
+        Settings.System.putFloat(mContext.getContentResolver(), KEY_PEAK_REFRESH_RATE, maxrate);
+    }
+
 
     protected RefreshUtils(Context context) {
         mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -73,7 +117,18 @@ public final class RefreshUtils {
         String value = mSharedPrefs.getString(REFRESH_CONTROL, null);
 
         if (value == null || value.isEmpty()) {
-            value = REFRESH_STANDARD + ":" + REFRESH_EXTREME;
+            value = REFRESH_STANDARD + ":" + REFRESH_EXTREME + ":" + REFRESH_LAND;
+            writeValue(value);
+        }
+
+        String[] modes = value.split(":");
+        if (modes.length < 3) {
+            modes = new String[] {
+                modes.length > 0 ? modes[0] : REFRESH_STANDARD,
+                modes.length > 1 ? modes[1] : REFRESH_EXTREME,
+                modes.length > 2 ? modes[2] : REFRESH_LAND
+            };
+            value = String.join(":", modes);
             writeValue(value);
         }
         return value;
@@ -92,9 +147,12 @@ public final class RefreshUtils {
             case STATE_EXTREME:
                 modes[1] = modes[1] + packageName + ",";
                 break;
+            case STATE_LAND:
+                modes[2] = modes[2] + packageName + ",";
+                break;
         }
 
-        finalString = modes[0] + ":" + modes[1];
+        finalString = modes[0] + ":" + modes[1] + ":" + modes[2];
 
         writeValue(finalString);
     }
@@ -107,35 +165,39 @@ public final class RefreshUtils {
             state = STATE_STANDARD;
         } else if (modes[1].contains(packageName + ",")) {
             state = STATE_EXTREME;
+        } else if (modes[2].contains(packageName + ",")) {
+            state = STATE_LAND;
         }
         return state;
     }
 
     protected void setRefreshRate(String packageName) {
         String value = getValue();
-        String modes[];
+        String[] modes = value.split(":");
         float maxrate = defaultMaxRate;
         float minrate = defaultMinRate;
-        isAppInList = false;
+        boolean isAppInList = false;
 
-            if (value != null) {
-            modes = value.split(":");
-
+        if (value != null) {
             if (modes[0].contains(packageName + ",")) {
                 maxrate = REFRESH_STATE_STANDARD;
-                if ( minrate > maxrate){
-                minrate = maxrate;
+                if (minrate > maxrate) {
+                    minrate = maxrate;
                 }
-		isAppInList = true;
-           } else if (modes[1].contains(packageName + ",")) {
+                isAppInList = true;
+            } else if (modes[1].contains(packageName + ",")) {
                 maxrate = REFRESH_STATE_EXTREME;
-                if ( minrate > maxrate){
-                minrate = maxrate;
+                if (minrate > maxrate) {
+                    minrate = maxrate;
                 }
-		isAppInList = true;
-           }
-          }
-	Settings.System.putFloat(mContext.getContentResolver(), KEY_MIN_REFRESH_RATE, minrate);
+                isAppInList = true;
+            } else if (modes[2].contains(packageName + ",")) {
+                initializeOrientationListener(packageName); // Initialize orientation listener for landscape mode
+                isAppInList = true;
+                return; // Return early as the listener will handle the refresh rate
+            }
+        }
+        Settings.System.putFloat(mContext.getContentResolver(), KEY_MIN_REFRESH_RATE, minrate);
         Settings.System.putFloat(mContext.getContentResolver(), KEY_PEAK_REFRESH_RATE, maxrate);
     }
 }
