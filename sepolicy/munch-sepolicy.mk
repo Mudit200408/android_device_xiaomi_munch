@@ -16,6 +16,10 @@
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += \
     device/xiaomi/munch/sepolicy/private
 
+# Public Sepolicy
+SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += \
+    device/xiaomi/munch/sepolicy/public
+
 # QCOM Sepolicy
 BOARD_VENDOR_SEPOLICY_DIRS += \
     device/xiaomi/munch/sepolicy/vendor/qcom
@@ -28,6 +32,7 @@ BOARD_VENDOR_SEPOLICY_DIRS += \
     device/xiaomi/munch/sepolicy/vendor/xiaomi/camera \
     device/xiaomi/munch/sepolicy/vendor/xiaomi/fingerprint \
     device/xiaomi/munch/sepolicy/vendor/xiaomi/ir \
+    device/xiaomi/munch/sepolicy/vendor/xiaomi/kprofiles \
     device/xiaomi/munch/sepolicy/vendor/xiaomi/modem \
     device/xiaomi/munch/sepolicy/vendor/xiaomi/parts \
     device/xiaomi/munch/sepolicy/vendor/xiaomi/power_supply \

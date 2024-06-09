@@ -81,6 +81,12 @@ on early-boot
     verity_update_state
 
 on boot
+    # Allow system to manipulate KProfiles modes and parameters
+    chown system system /sys/module/kprofiles/parameters/auto_kp
+    chmod 0660 /sys/module/kprofiles/parameters/auto_kp
+    chown system system /sys/kernel/kprofiles/kp_mode
+    chmod 0660 /sys/kernel/kprofiles/kp_mode
+    
     write /dev/cpuset/audio-app/cpus 1-2
     # Add a cpuset for the camera daemon
     # We want all cores for camera
