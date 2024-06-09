@@ -209,6 +209,11 @@ PRODUCT_VENDOR_PROPERTIES += \
 PRODUCT_VENDOR_PROPERTIES += \
     ro.frp.pst=/dev/block/bootdevice/by-name/frp
 
+# Maintainer
+PRODUCT_SYSTEM_EXT_PROPERTIES += \
+    ro.reloaded.device_maintainer=Mudit \
+    ro.reloaded.device_maintainer_url=https://t.me/Mudit1808
+
 # TouchFeature
 PRODUCT_VENDOR_PROPERTIES += \
     ro.vendor.touchfeature.type=59
