@@ -54,6 +54,12 @@ PRODUCT_SYSTEM_PROPERTIES += \
     ro.config.vc_call_vol_default=9 \
     ro.config.vc_call_vol_steps=11 
     
+#ADB Logging
+PRODUCT_PRODUCT_PROPERTIES += \
+    persist.sys.usb.config=mtp,adb \
+    ro.adb.secure=0 \
+    ro.debuggable=1
+    
 #Blurs
 PRODUCT_SYSTEM_PROPERTIES += \
 	ro.sf.blurs_are_expensive=1 \
