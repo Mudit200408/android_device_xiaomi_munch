@@ -1,0 +1,2 @@
+# Sensors Service
+android.frameworks.sensorservice::ISensorManager                              u:object_r:fwk_sensor_hwservice:s0

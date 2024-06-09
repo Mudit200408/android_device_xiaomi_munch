@@ -60,7 +60,8 @@ on early-init
 on boot
     # DT2W
     chown system system /sys/touchpanel/double_tap
-
+    chmod 0660 /sys/touchpanel/double_tap
+    
     chown system system /sys/class/touch/touch_dev/palm_sensor
     chmod 0664 /sys/class/power_supply/battery/dc_thermal_levels
     chown system system /sys/class/thermal/thermal_message/sconfig
@@ -69,6 +70,14 @@ on boot
     copy  /vendor/etc/tunings.txt /mnt/vendor/persist/vpp/tunings.txt
     mkdir /mnt/vendor/persist/camera 0755 system cameraserver
     write /sys/block/sda/queue/wbt_lat_usec 75000
+
+    # Allow system to modify exposure dim layer state
+    chown system system /sys/devices/platform/soc/soc:qcom,dsi-display-primary/msm_fb_ea_enable
+    chmod 0660 /sys/devices/platform/soc/soc:qcom,dsi-display-primary/msm_fb_ea_enable
+    
+    # TouchFeature
+    chown system system /dev/xiaomi-touch
+    chmod 0660 /dev/xiaomi-touch
 
 on charger
     mkdir /mnt/vendor/persist

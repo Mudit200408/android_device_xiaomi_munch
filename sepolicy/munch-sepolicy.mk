@@ -43,3 +43,21 @@ BOARD_VENDOR_SEPOLICY_DIRS += \
     device/xiaomi/munch/sepolicy/vendor/xiaomi/vibrator \
     device/xiaomi/munch/sepolicy/vendor/xiaomi/wireless \
     device/xiaomi/munch/sepolicy/vendor/xiaomi/wlan
+
+# Xiaomi Parts Sepolicy
+BOARD_SEPOLICY_DIRS += \
+    device/xiaomi/munch/sepolicy/vendor/xiaomi/parts
+
+SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += \
+    device/xiaomi/munch/sepolicy/private/xiaomi/parts
+
+SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += \
+    device/xiaomi/munch/sepolicy/public/xiaomi/parts
+
+# Xiaomi TouchFeature
+BOARD_SEPOLICY_DIRS += \
+    device/xiaomi/munch/sepolicy/vendor/xiaomi/touchfeature
+
+# DC Dimming - Dimlayer Exposure
+BOARD_SEPOLICY_DIRS += \
+    device/xiaomi/munch/sepolicy/vendor/xiaomi/dcdimming

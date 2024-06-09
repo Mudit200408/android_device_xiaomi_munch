@@ -209,6 +209,10 @@ PRODUCT_VENDOR_PROPERTIES += \
 PRODUCT_VENDOR_PROPERTIES += \
     ro.frp.pst=/dev/block/bootdevice/by-name/frp
 
+# TouchFeature
+PRODUCT_VENDOR_PROPERTIES += \
+    ro.vendor.touchfeature.type=59
+
 # FUSE
 PRODUCT_PRODUCT_PROPERTIES += \
     persist.sys.fuse.passthrough.enable=true
